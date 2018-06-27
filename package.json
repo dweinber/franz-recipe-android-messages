@@ -1,6 +1,6 @@
 {
   "id": "android-messages",
-  "name": "Android Messages",
+  "name": "android-messages",
   "version": "1.0.0",
   "description": "Android Messages",
   "main": "index.js",
