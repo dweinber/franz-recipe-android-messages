@@ -1,6 +1,44 @@
+// Gets the computed style. Pulled from https://stackoverflow.com/a/2664055/544326
+function getStyle(el, styleProp) {
+  var value, defaultView = (el.ownerDocument || document).defaultView;
+  // W3C standard way:
+  if (defaultView && defaultView.getComputedStyle) {
+    // sanitize property name to css notation
+    // (hypen separated words eg. font-Size)
+    styleProp = styleProp.replace(/([A-Z])/g, "-$1").toLowerCase();
+    return defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);
+  } else if (el.currentStyle) { // IE
+    // sanitize property name to camelCase
+    styleProp = styleProp.replace(/\-(\w)/g, function(str, letter) {
+      return letter.toUpperCase();
+    });
+    value = el.currentStyle[styleProp];
+    // convert other units to pixels on IE
+    if (/^\d+(em|pt|%|ex)?$/i.test(value)) { 
+      return (function(value) {
+        var oldLeft = el.style.left, oldRsLeft = el.runtimeStyle.left;
+        el.runtimeStyle.left = el.currentStyle.left;
+        el.style.left = value || 0;
+        value = el.style.pixelLeft + "px";
+        el.style.left = oldLeft;
+        el.runtimeStyle.left = oldRsLeft;
+        return value;
+      })(value);
+    }
+    return value;
+  }
+}
+
 module.exports = (Franz) => {
   function getMessages() {
-    const unreadCount = document.querySelectorAll('.tpEAA.yrs5ff').length;
+    const messages = document.querySelectorAll('[aria-label=Conversations]>content span:not([class])');
+
+    let unreadCount = 0;
+    for (let i = 0; i < messages.length; i++) {
+      if (getStyle(messages[i], "fontWeight") === "600") {
+        unreadCount++;
+      }
+    }
 
     // set Franz badge
     Franz.setBadge(unreadCount);
