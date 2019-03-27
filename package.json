@@ -7,7 +7,7 @@
   "author": "Daniel Weinberger",
   "license": "MIT",
   "config": {
-    "serviceURL": "https://messages.android.com/",
+    "serviceURL": "https://messages.google.com/web",
     "hasNotificationSound": true
   }
 }
