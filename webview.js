@@ -1,15 +1,8 @@
 "use strict";
 
-const {
-  remote
-} = require('electron');
-
-const path = require('path');
-
+const { remote } = require('electron');
 const webContents = remote.getCurrentWebContents();
-const {
-  session
-} = webContents;
+const { session } = webContents;
 
 window.addEventListener('beforeunload', async () => {
   try {
@@ -28,15 +21,15 @@ window.addEventListener('beforeunload', async () => {
 });
 
 module.exports = Franz => {
-  // Reload on error
-  const el = document.getElementById('af-error-container');
-
-  if(el) {
-    window.location.reload();
-  }
-  
-  // Get unread messages
   function getMessages() {
+    // Reload on error
+    const el = document.getElementById('af-error-container');
+
+    if(el) {
+      window.location.reload();
+    }
+
+    // Get message count
     const messages = document.querySelectorAll('.text-content.unread').length;
     Franz.setBadge(messages);
   }
